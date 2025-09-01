@@ -1,1 +1,1 @@
-# Implementation-of-pipelined-32-bit-RISC-MIPS-processor-using-Verilog-HDL
+# MIPS_32
