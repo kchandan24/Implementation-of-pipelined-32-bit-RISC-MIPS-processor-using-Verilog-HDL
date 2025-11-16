@@ -39,6 +39,7 @@ begin
 IF_ID_IR <= #2 Mem[PC];
 IF_ID_NPC <= #2 PC + 1;
 PC <= #2 PC+1;
+          TAKEN_BRANCH <= #2 0;
 end
 end
 
@@ -75,11 +76,12 @@ if (HALTED == 0)
 begin
 EX_MEM_type <= #2 ID_EX_type;
 EX_MEM_IR <= #2 ID_EX_IR;
-TAKEN_BRANCH <= #2 0;
+
 
 case(ID_EX_type)
 
 RR_ALU: begin
+EX_MEM_cond <= 0; //changes
 case(ID_EX_IR[31:26])
 ADD: EX_MEM_ALUOut <= #2 ID_EX_A + ID_EX_B;
 SUB: EX_MEM_ALUOut <= #2 ID_EX_A - ID_EX_B;
@@ -92,6 +94,7 @@ endcase
 end
 
 RM_ALU: begin
+          EX_MEM_cond <= 0;
 case(ID_EX_IR[31:26])
 ADDI: EX_MEM_ALUOut <= #2 ID_EX_A + ID_EX_Imm;
 SUBI: EX_MEM_ALUOut <= #2 ID_EX_A - ID_EX_Imm;
@@ -101,6 +104,7 @@ endcase
 end
 
 LOAD, STORE: begin
+          EX_MEM_cond <= 0;
 EX_MEM_ALUOut <= #2 ID_EX_A + ID_EX_Imm;
 EX_MEM_B <= #2 ID_EX_B;
 end
